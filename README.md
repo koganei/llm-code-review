@@ -60,7 +60,7 @@ jobs:
           git diff "origin/${{ env.PULL_REQUEST_HEAD_REF }}" > "diff.txt"
           # shellcheck disable=SC2086
           echo "diff=$(cat "diff.txt")" >> $GITHUB_ENV
-      - uses: luiyen/llm-code-review@v0.0.1
+      - uses: koganei/llm-code-review@v0.0.1
         name: "Code Review"
         id: review
         with:
