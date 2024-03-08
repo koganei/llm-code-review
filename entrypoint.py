@@ -15,7 +15,7 @@ from typing import List
 
 import click
 import requests
-from langchain import HuggingFaceHub, LLMChain, PromptTemplate
+from langchain import OpenAI, LLMChain, PromptTemplate
 from loguru import logger
 
 
@@ -76,14 +76,14 @@ def get_review(
     chunked_diff_list = chunk_string(input_string=diff, chunk_size=prompt_chunk_size)
     # Get summary by chunk
     chunked_reviews = []
-    llm = HuggingFaceHub(
-        repo_id=repo_id,
-        model_kwargs={"temperature": temperature,
-                      "max_new_tokens": max_new_tokens,
-                      "top_p": top_p,
-                      "top_k": top_k},
-                      huggingfacehub_api_token=os.getenv("API_KEY")
-    )
+    llm = OpenAI(
+        openai_api_key=os.getenv("API_KEY"),
+        model="gpt-3.5-turbo",
+        temperature=temperature,
+        max_new_tokens=max_new_tokens,
+        top_p=top_p,
+        top_k=top_k
+        )
     for chunked_diff in chunked_diff_list:
         question=chunked_diff
         template = """Provide a concise summary of the bug found in the code, describing its characteristics, 

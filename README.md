@@ -1,15 +1,15 @@
 # llm-code-review-action
-A container GitHub Action to review a pull request by HuggingFace's LLM Model.
+A container GitHub Action to review a pull request by OpenAI's LLM Model.
 
 If the size of a pull request is over the maximum chunk size of the HuggingFace API, the Action will split the pull request into multiple chunks and generate review comments for each chunk.
 And then the Action summarizes the review comments and posts a review comment to the pull request.
 
 ## Pre-requisites
-We have to set a GitHub Actions secret `HUGGING_FACE_API_KEY` to use the HuggingFace API so that we securely pass it to the Action.
+We have to set a GitHub Actions secret `OPENAI_API_KEY` to use the OpenAI API so that we securely pass it to the Action.
 
 ## Inputs
 
-- `apiKey`: The HuggingFace API key to access the API.
+- `apiKey`: The OpenAI API key to access the API.
 - `githubToken`: The GitHub token to access the GitHub API.
 - `githubRepository`: The GitHub repository to post a review comment.
 - `githubPullRequestNumber`: The GitHub pull request number to post a review comment.
@@ -23,7 +23,7 @@ We have to set a GitHub Actions secret `HUGGING_FACE_API_KEY` to use the Hugging
 - `maxNewTokens`: The max_tokens to generate a review comment.
 - `logLevel`: The log level to print logs.
 
-As you might know, a model of HuggingFace has limitation of the maximum number of input tokens.
+As you might know, a model of OpenAI has limitation of the maximum number of input tokens.
 So we have to split the diff of a pull request into multiple chunks, if the size of the diff is over the limitation.
 We can tune the chunk size based on the model we use.
 
@@ -69,7 +69,6 @@ jobs:
           githubRepository: ${{ github.repository }}
           githubPullRequestNumber: ${{ github.event.pull_request.number }}
           gitCommitHash: ${{ github.event.pull_request.head.sha }}
-          repoId: "meta-llama/Llama-2-7b-chat-hf"
           temperature: "0.2"
           maxNewTokens: "250"
           topK: "50"

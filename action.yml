@@ -1,12 +1,12 @@
 name: 'LLM Code Review'
 description: 'Let LLM model review your code'
-author: 'Louis Le (luiyen)'
+author: 'Marc Khoury -- Forked from Louis Le (luiyen)'
 inputs:
   githubToken:
     description: 'Github token to access the repo'
     required: true
   apiKey:
-    description: 'Huggingface access token from [https://huggingface.co/settings/tokens](https://huggingface.co/settings/tokens)'
+    description: 'OPEN AI API KEY'
     required: true
   githubRepository:
     description: "The GitHub repository to use for the action"
@@ -23,7 +23,7 @@ inputs:
   repoId:
     description: "LLM model"
     required: true
-    default: "meta-llama/Llama-2-7b-chat-hf"
+    default: "gpt-3.5-turbo"
   maxNewTokens:
     description: "The amount of new tokens to be generated, this does not include the input length it is a estimate of the size of generated text you want. Each new tokens slows down the request, so look for balance between response times and length of text generated."
     required: false
