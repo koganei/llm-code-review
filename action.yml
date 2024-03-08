@@ -1,4 +1,4 @@
-name: 'LLM Code Review'
+name: 'Review Code using OpenAI\'s ChatGPT'
 description: 'Let LLM model review your code'
 author: 'Marc Khoury -- Forked from Louis Le (luiyen)'
 inputs:
