@@ -79,10 +79,7 @@ def get_review(
     llm = OpenAI(
         openai_api_key=os.getenv("OPENAI_API_KEY"),
         model="gpt-3.5-turbo",
-        temperature=temperature,
-        max_new_tokens=max_new_tokens,
-        top_p=top_p,
-        top_k=top_k
+        temperature=0.2
         )
     for chunked_diff in chunked_diff_list:
         question=chunked_diff
