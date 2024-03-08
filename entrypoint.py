@@ -77,7 +77,7 @@ def get_review(
     # Get summary by chunk
     chunked_reviews = []
     llm = OpenAI(
-        openai_api_key=os.getenv("API_KEY"),
+        openai_api_key=os.getenv("OPENAI_API_KEY"),
         model="gpt-3.5-turbo",
         temperature=temperature,
         max_new_tokens=max_new_tokens,

@@ -62,7 +62,6 @@ runs:
     GITHUB_PULL_REQUEST_NUMBER: ${{ inputs.githubPullRequestNumber }}
     GIT_COMMIT_HASH: ${{ inputs.gitCommitHash }}
   args:
-    - "--repo-id=${{ inputs.repoId }}"
     - "--temperature=${{ inputs.temperature }}"
     - "--max-new-tokens=${{ inputs.maxNewTokens }}"
     - "--top-p=${{ inputs.topP }}"
