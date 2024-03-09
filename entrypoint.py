@@ -73,6 +73,7 @@ def get_review(
         prompt_chunk_size: int
 ):
     """Get a review"""
+    logger.debug(f"Diff: {diff}")
     # Chunk the prompt
     chunked_diff_list = chunk_string(input_string=diff, chunk_size=prompt_chunk_size)
     # Get summary by chunk
