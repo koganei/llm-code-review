@@ -42,29 +42,32 @@ on:
       - "LICENSE"
 
 jobs:
-  review:
-    runs-on: ubuntu-latest
+  build:
     permissions:
       contents: read
       pull-requests: write
+    runs-on: ubuntu-latest
+
     steps:
       - uses: actions/checkout@v3
-      - name: "Get diff of the pull request"
-        id: get_diff
-        shell: bash
-        env:
-          PULL_REQUEST_HEAD_REF: "${{ github.event.pull_request.head.ref }}"
-        run: |-
-          git fetch origin "${{ env.PULL_REQUEST_HEAD_REF }}:${{ env.PULL_REQUEST_HEAD_REF }}"
-          git checkout "${{ env.PULL_REQUEST_HEAD_REF }}"
-          git diff "origin/${{ env.PULL_REQUEST_HEAD_REF }}" > "diff.txt"
-          # shellcheck disable=SC2086
-          echo "diff=$(cat "diff.txt")" >> $GITHUB_ENV
-      - uses: koganei/llm-code-review@v0.0.1
+        with:
+          fetch-depth: 0 # needed to checkout all branches for the diff action to work
+
+      # Check the PR diff using the current branch and the base branch of the PR
+      - uses: GrantBirki/git-diff-action@v2.4.1
+        id: git-diff-action
+        with:
+          json_diff_file_output: diff.json
+          raw_diff_file_output: diff.txt
+          file_output_only: "false"
+
+      - uses: koganei/llm-code-review@main
         name: "Code Review"
         id: review
+        env:
+          DIFF: ${{ steps.git-diff-action.outputs.raw-diff-path }}
         with:
-          apiKey: ${{ secrets.API_KEY }}
+          apiKey: ${{ secrets.OPENAI_API_KEY }}
           githubToken: ${{ secrets.GITHUB_TOKEN }}
           githubRepository: ${{ github.repository }}
           githubPullRequestNumber: ${{ github.event.pull_request.number }}
@@ -74,7 +77,7 @@ jobs:
           topK: "50"
           topP: "0.95"
           pullRequestDiff: |-
-            ${{ steps.get_diff.outputs.pull_request_diff }}
+            $(cat $DIFF)
           pullRequestChunkSize: "3500"
           logLevel: "DEBUG"
 ```
