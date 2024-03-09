@@ -96,12 +96,12 @@ def get_review(
 
         Diff:
 
-        {question}
+        {diff}
         """
 
-        prompt = PromptTemplate(template=template, input_variables=["question"])
+        prompt = PromptTemplate(template=template, input_variables=["diff"])
         llm_chain = LLMChain(prompt=prompt, llm=llm)
-        review_result = llm_chain.run(question)
+        review_result = llm_chain.invoke(question)
         chunked_reviews.append(review_result)
 
     # If the chunked reviews are only one, return it
