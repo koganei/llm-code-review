@@ -15,7 +15,8 @@ from typing import List
 
 import click
 import requests
-from langchain import OpenAI, LLMChain, PromptTemplate
+from langchain import LLMChain, PromptTemplate
+from langchain_openai import ChatOpenAI
 from loguru import logger
 
 
@@ -76,7 +77,7 @@ def get_review(
     chunked_diff_list = chunk_string(input_string=diff, chunk_size=prompt_chunk_size)
     # Get summary by chunk
     chunked_reviews = []
-    llm = OpenAI(
+    llm = ChatOpenAI(
         openai_api_key=os.getenv("OPENAI_API_KEY"),
         model="gpt-3.5-turbo",
         temperature=0.2
