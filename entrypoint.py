@@ -123,10 +123,13 @@ def format_review_comment(summarized_review: str, chunked_reviews: List[str]) ->
     if len(chunked_reviews) == 1:
         return summarized_review
     unioned_reviews = "\n".join(chunked_reviews)
-    review = f"""<details>
-    <summary>{summarized_review}</summary>
-    {unioned_reviews}
-    </details>
+    review = f"""
+# Summary
+{summarized_review}
+
+---
+#Chunks
+{unioned_reviews}
     """
     return review
 
@@ -171,14 +174,18 @@ def main(
     # Format reviews
     review_comment = format_review_comment(summarized_review=summarized_review,
                                            chunked_reviews=chunked_reviews)
+    
+
+    # write "test" to environment variable GITHUB_STEP_SUMMARY
+    os.environ["GITHUB_STEP_SUMMARY"] = "review_comment"
     # Create a comment to a pull request
-    create_a_comment_to_pull_request(
-        github_token=os.getenv("GITHUB_TOKEN"),
-        github_repository=os.getenv("GITHUB_REPOSITORY"),
-        pull_request_number=int(os.getenv("GITHUB_PULL_REQUEST_NUMBER")),
-        git_commit_hash=os.getenv("GIT_COMMIT_HASH"),
-        body=review_comment
-    )
+    # create_a_comment_to_pull_request(
+    #     github_token=os.getenv("GITHUB_TOKEN"),
+    #     github_repository=os.getenv("GITHUB_REPOSITORY"),
+    #     pull_request_number=int(os.getenv("GITHUB_PULL_REQUEST_NUMBER")),
+    #     git_commit_hash=os.getenv("GIT_COMMIT_HASH"),
+    #     body=review_comment
+    # )
 
 
 if __name__ == "__main__":
